@@ -5,8 +5,8 @@
 package events
 
 import (
-	"github.com/onosproject/onos-lib-go/pkg/sctp/connection"
-	"github.com/onosproject/onos-lib-go/pkg/sctp/types"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/connection"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/types"
 )
 
 // IsType checks whether the given notification is of the given type

@@ -8,7 +8,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"github.com/onosproject/onos-lib-go/pkg/certs"
+	"github.com/wangxn2015/onos-lib-go/pkg/certs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )

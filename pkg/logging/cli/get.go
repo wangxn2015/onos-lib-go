@@ -6,12 +6,12 @@ package cli
 
 import (
 	"context"
-	"github.com/onosproject/onos-lib-go/pkg/errors"
+	"github.com/wangxn2015/onos-lib-go/pkg/errors"
 	"time"
 
-	api "github.com/onosproject/onos-lib-go/api/logging"
-	"github.com/onosproject/onos-lib-go/pkg/cli"
 	"github.com/spf13/cobra"
+	api "github.com/wangxn2015/onos-lib-go/api/logging"
+	"github.com/wangxn2015/onos-lib-go/pkg/cli"
 )
 
 func getGetCommand() *cobra.Command {

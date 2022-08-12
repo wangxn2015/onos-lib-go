@@ -114,6 +114,6 @@ log.SetLevel(logging.WarnLevel)
 
 When the log level is changed, the level will be propagated to any descendants that have no explicit log level configured.
 
-[logging]: https://github.com/onosproject/onos-lib-go/tree/master/pkg/logging
+[logging]: https://github.com/wangxn2015/onos-lib-go/tree/master/pkg/logging
 [Zap]: https://godoc.org/go.uber.org/zap
 [Adaptive Radix Tree]: https://github.com/plar/go-adaptive-radix-tree

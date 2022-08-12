@@ -1,4 +1,4 @@
-module github.com/onosproject/onos-lib-go
+module github.com/wangxn2015/onos-lib-go
 
 go 1.16
 

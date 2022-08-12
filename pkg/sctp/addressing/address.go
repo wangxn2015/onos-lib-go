@@ -10,10 +10,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/types"
-	"github.com/onosproject/onos-lib-go/pkg/sctp/utils"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/types"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/utils"
 
-	"github.com/onosproject/onos-lib-go/pkg/errors"
+	"github.com/wangxn2015/onos-lib-go/pkg/errors"
 
 	syscall "golang.org/x/sys/unix"
 )

@@ -15,16 +15,16 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/events"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/events"
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/listener"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/listener"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/connection"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/connection"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/addressing"
-	"github.com/onosproject/onos-lib-go/pkg/sctp/types"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/addressing"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/types"
 
 	"testing"
 	"time"

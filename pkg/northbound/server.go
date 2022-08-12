@@ -9,14 +9,14 @@ package northbound
 import (
 	"crypto/tls"
 	"fmt"
-	"github.com/onosproject/onos-lib-go/pkg/grpc/auth"
+	"github.com/wangxn2015/onos-lib-go/pkg/grpc/auth"
 	"net"
 
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 
-	"github.com/onosproject/onos-lib-go/pkg/certs"
-	"github.com/onosproject/onos-lib-go/pkg/logging"
+	"github.com/wangxn2015/onos-lib-go/pkg/certs"
+	"github.com/wangxn2015/onos-lib-go/pkg/logging"
 	"google.golang.org/grpc/credentials"
 
 	"google.golang.org/grpc"

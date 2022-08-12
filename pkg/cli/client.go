@@ -7,9 +7,9 @@ package cli
 import (
 	"context"
 	"crypto/tls"
-	"github.com/onosproject/onos-lib-go/pkg/certs"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+	"github.com/wangxn2015/onos-lib-go/pkg/certs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"

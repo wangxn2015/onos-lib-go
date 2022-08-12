@@ -12,12 +12,12 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	"github.com/onosproject/onos-lib-go/pkg/errors"
+	"github.com/wangxn2015/onos-lib-go/pkg/errors"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/types"
-	"github.com/onosproject/onos-lib-go/pkg/sctp/utils"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/types"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/utils"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/addressing"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/addressing"
 
 	syscall "golang.org/x/sys/unix"
 )

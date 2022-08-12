@@ -8,7 +8,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/grpc-ecosystem/go-grpc-middleware/util/metautils"
-	"github.com/onosproject/onos-lib-go/pkg/auth"
+	"github.com/wangxn2015/onos-lib-go/pkg/auth"
 	"strings"
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"

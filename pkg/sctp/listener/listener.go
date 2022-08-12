@@ -8,12 +8,12 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/onosproject/onos-lib-go/pkg/errors"
+	"github.com/wangxn2015/onos-lib-go/pkg/errors"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/connection"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/connection"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/addressing"
-	"github.com/onosproject/onos-lib-go/pkg/sctp/types"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/addressing"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/types"
 )
 
 // Listener SCTP listener

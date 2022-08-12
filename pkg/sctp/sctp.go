@@ -7,11 +7,11 @@ package sctp
 import (
 	"net"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/addressing"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/addressing"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/connection"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/connection"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/types"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/types"
 )
 
 // DialOptions is SCTP options

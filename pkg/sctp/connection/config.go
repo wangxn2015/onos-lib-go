@@ -5,7 +5,7 @@
 package connection
 
 import (
-	"github.com/onosproject/onos-lib-go/pkg/sctp/types"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/types"
 )
 
 // Config sctp connection config

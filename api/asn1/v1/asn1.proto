@@ -4,7 +4,7 @@
 
 syntax = "proto3";
 package asn1.v1;
-option go_package = "github.com/onosproject/onos-lib-go/api/asn1/v1/asn1";
+option go_package = "github.com/wangxn2015/onos-lib-go/api/asn1/v1/asn1";
 
 message BitString {
   bytes value = 1 [json_name = "value"];

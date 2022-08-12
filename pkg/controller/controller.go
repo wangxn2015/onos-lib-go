@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/onosproject/onos-lib-go/pkg/logging"
+	"github.com/wangxn2015/onos-lib-go/pkg/logging"
 )
 
 var log = logging.GetLogger("controller")

@@ -15,7 +15,7 @@ import (
 	"strings"
 
 	ecoidc "github.com/ericchiang/oidc"
-	"github.com/onosproject/onos-lib-go/pkg/logging"
+	"github.com/wangxn2015/onos-lib-go/pkg/logging"
 	"gopkg.in/square/go-jose.v2"
 
 	"google.golang.org/grpc/status"

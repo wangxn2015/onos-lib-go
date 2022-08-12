@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	api "github.com/onosproject/onos-lib-go/api/logging"
-	"github.com/onosproject/onos-lib-go/pkg/cli"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
+	api "github.com/wangxn2015/onos-lib-go/api/logging"
+	"github.com/wangxn2015/onos-lib-go/pkg/cli"
 )
 
 func getSetCommand() *cobra.Command {

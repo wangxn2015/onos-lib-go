@@ -11,7 +11,7 @@ package uri
 import (
 	"strings"
 
-	"github.com/onosproject/onos-lib-go/pkg/errors"
+	"github.com/wangxn2015/onos-lib-go/pkg/errors"
 )
 
 const upperhex = "0123456789ABCDEF"

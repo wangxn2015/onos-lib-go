@@ -5,8 +5,8 @@
 package cli
 
 import (
-	"github.com/onosproject/onos-lib-go/pkg/cli"
 	"github.com/spf13/cobra"
+	"github.com/wangxn2015/onos-lib-go/pkg/cli"
 )
 
 //var viper = viperapi.New()

@@ -15,9 +15,9 @@ import (
 
 	petname "github.com/dustinkirkland/golang-petname"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp"
-	"github.com/onosproject/onos-lib-go/pkg/sctp/addressing"
-	"github.com/onosproject/onos-lib-go/pkg/sctp/types"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/addressing"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/types"
 )
 
 func newPetName(words int) string {

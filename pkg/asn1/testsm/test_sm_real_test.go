@@ -5,8 +5,8 @@
 package testsm
 
 import (
-	"github.com/onosproject/onos-lib-go/pkg/asn1/aper"
 	"github.com/stretchr/testify/assert"
+	"github.com/wangxn2015/onos-lib-go/pkg/asn1/aper"
 	"testing"
 )
 

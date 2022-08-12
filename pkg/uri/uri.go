@@ -17,7 +17,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/onosproject/onos-lib-go/pkg/errors"
+	"github.com/wangxn2015/onos-lib-go/pkg/errors"
 )
 
 // URI represents a parsed URI

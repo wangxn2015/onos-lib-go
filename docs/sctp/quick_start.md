@@ -6,16 +6,16 @@ SPDX-License-Identifier: Apache-2.0
 # Quick Start 
 
 ## Installation 
-The SCTP library is managed using Go modules. First you need to include the onos-lib-go in your Go application by adding the `github.com/onosproject/onos-lib-go` module to your go.mod: 
+The SCTP library is managed using Go modules. First you need to include the onos-lib-go in your Go application by adding the `github.com/wangxn2015/onos-lib-go` module to your go.mod: 
 
 ```bash
-go get github.com/onosproject/onos-lib-go
+go get github.com/wangxn2015/onos-lib-go
 ```
 
 Then you need to import the required packages under [SCTP folder](../../pkg/sctp) in your source code files. For example:
 
 ```go
-import "github.com/onosproject/onos-lib-go/pkg/sctp"
+import "github.com/wangxn2015/onos-lib-go/pkg/sctp"
 ```
 
 ## A Simple SCTP Client and Server Example

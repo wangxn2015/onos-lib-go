@@ -5,11 +5,11 @@
 package logging
 
 import (
-	"github.com/onosproject/onos-lib-go/pkg/errors"
+	"github.com/wangxn2015/onos-lib-go/pkg/errors"
 	"strings"
 
-	"github.com/onosproject/onos-lib-go/api/logging"
-	"github.com/onosproject/onos-lib-go/pkg/logging/service"
+	"github.com/wangxn2015/onos-lib-go/api/logging"
+	"github.com/wangxn2015/onos-lib-go/pkg/logging/service"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"

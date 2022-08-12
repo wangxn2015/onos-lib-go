@@ -8,8 +8,8 @@ import (
 	"net"
 	"testing"
 
-	"github.com/onosproject/onos-lib-go/pkg/sctp/types"
 	"github.com/stretchr/testify/assert"
+	"github.com/wangxn2015/onos-lib-go/pkg/sctp/types"
 )
 
 type resolveSCTPAddrTest struct {
