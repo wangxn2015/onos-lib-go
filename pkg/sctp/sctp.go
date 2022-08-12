@@ -71,6 +71,19 @@ func DialSCTP(addr net.Addr, opts ...DialOption) (*connection.SCTPConn, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	//wxn--> bind client addr here
+	addrArray := make([]net.IPAddr, 0)
+	laddr := net.IPAddr{
+		IP: net.ParseIP("192.168.127.113"),
+	}
+	addrArray = append(addrArray, laddr)
+	localSCTPAddr := addressing.Address{
+		IPAddrs: addrArray,
+		Port:    9999,
+	}
+	conn.Bind(&localSCTPAddr)
+	//----------------------------
 	sctpAddress := addr.(*addressing.Address)
 	err = conn.Connect(sctpAddress)
 	if err != nil {
