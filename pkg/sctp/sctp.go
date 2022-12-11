@@ -71,18 +71,75 @@ func DialSCTP(addr net.Addr, opts ...DialOption) (*connection.SCTPConn, error) {
 	if err != nil {
 		return nil, err
 	}
+	/*
+		//wxn--> bind client addr here----------------------
+		addrArray := make([]net.IPAddr, 0)
+		laddr := net.IPAddr{
+			//these two ips can be used for testing. when ransim is deployed on RIC node(and outside k8s),use the RIC address 113;
+			//11楼RIC地址
+			//IP: net.ParseIP("192.168.127.113"),
+			//11楼 baicells RAN地址是
+			//IP: net.ParseIP("192.168.126.182"),
+		}
+		addrArray = append(addrArray, laddr)
+		localSCTPAddr := addressing.Address{
+			IPAddrs: addrArray,
+			//Port:    0,
+			AddressFamily: types.Sctp4,
+		}
+		err = conn.Bind(&localSCTPAddr)
+		if err != nil {
+			//fmt.Printf("wxn----> SCTP client binding error: %v",  err)
+			return nil, err
+		}
+		//---------------------------------------------------
+	*/
+	sctpAddress := addr.(*addressing.Address)
+	err = conn.Connect(sctpAddress)
+	if err != nil {
+		return nil, err
+	}
+
+	return conn, nil
+
+}
+
+// DialSCTP creates a new SCTP connection
+func DialSCTPWithSctpClientBindAddress(addr net.Addr, sctpClientAddr string, opts ...DialOption) (*connection.SCTPConn, error) {
+	dialOptions := &DialOptions{}
+	for _, option := range opts {
+		option(dialOptions)
+	}
+	cfg := connection.NewConfig(
+		connection.WithAddressFamily(dialOptions.addressFamily),
+		connection.WithOptions(dialOptions.initMsg),
+		connection.WithMode(dialOptions.mode),
+		connection.WithNonBlocking(dialOptions.nonblocking))
+	conn, err := connection.NewSCTPConnection(cfg)
+	if err != nil {
+		return nil, err
+	}
 
 	//wxn--> bind client addr here
 	addrArray := make([]net.IPAddr, 0)
 	laddr := net.IPAddr{
-		IP: net.ParseIP("192.168.127.113"),
+		IP: net.ParseIP(sctpClientAddr),
+		//11楼RIC地址
+		//IP: net.ParseIP("192.168.127.113"),
+		//11楼 baicells RAN地址是
+		//IP: net.ParseIP("192.168.126.182"),
 	}
 	addrArray = append(addrArray, laddr)
 	localSCTPAddr := addressing.Address{
 		IPAddrs: addrArray,
-		Port:    9999,
+		//Port:    0,
+		AddressFamily: types.Sctp4,
 	}
-	conn.Bind(&localSCTPAddr)
+	err = conn.Bind(&localSCTPAddr)
+	if err != nil {
+		//fmt.Printf("wxn----> SCTP client binding error: %v",  err)
+		return nil, err
+	}
 	//----------------------------
 	sctpAddress := addr.(*addressing.Address)
 	err = conn.Connect(sctpAddress)
