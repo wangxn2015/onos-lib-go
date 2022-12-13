@@ -7,7 +7,7 @@ package aper
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/wangxn2015/onos-lib-go/api/asn1/v1/asn1"
+	"github.com/onosproject/onos-lib-go/api/asn1/v1/asn1"
 	"github.com/wangxn2015/onos-lib-go/pkg/errors"
 	"github.com/wangxn2015/onos-lib-go/pkg/logging"
 	"reflect"

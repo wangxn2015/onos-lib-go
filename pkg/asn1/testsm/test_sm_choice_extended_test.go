@@ -6,7 +6,7 @@ package testsm
 
 import (
 	"encoding/hex"
-	"github.com/wangxn2015/onos-lib-go/pkg/asn1/aper"
+	"github.com/onosproject/onos-lib-go/pkg/asn1/aper"
 	"gotest.tools/assert"
 	"testing"
 )

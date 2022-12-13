@@ -7,7 +7,7 @@
 package test
 
 import (
-	asn1 "github.com/wangxn2015/onos-lib-go/api/asn1/v1/asn1"
+	asn1 "github.com/onosproject/onos-lib-go/api/asn1/v1/asn1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"

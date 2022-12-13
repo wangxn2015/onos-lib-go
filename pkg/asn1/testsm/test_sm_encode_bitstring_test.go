@@ -6,9 +6,9 @@ package testsm
 
 import (
 	"encoding/hex"
+	"github.com/onosproject/onos-lib-go/api/asn1/v1/asn1"
+	"github.com/onosproject/onos-lib-go/pkg/asn1/aper"
 	"github.com/stretchr/testify/assert"
-	"github.com/wangxn2015/onos-lib-go/api/asn1/v1/asn1"
-	"github.com/wangxn2015/onos-lib-go/pkg/asn1/aper"
 	"testing"
 )
 
