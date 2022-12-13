@@ -1,25 +1,34 @@
-// SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
+// Copyright 2021-present Open Networking Foundation.
 //
-// SPDX-License-Identifier: Apache-2.0
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 package aper
 
 import (
 	"encoding/hex"
 	"fmt"
-	"github.com/wangxn2015/onos-lib-go/pkg/errors"
+	"github.com/onosproject/onos-lib-go/pkg/errors"
 	"math"
 	"reflect"
 )
 
 type perRawBitData struct {
-	bytes                 []byte
-	bitsOffset            uint
-	choiceMap             map[string]map[int]reflect.Type
-	unique                int64
-	canonicalChoiceMap    map[string]map[int64]reflect.Type
-	choiceCanBeExtended   bool
-	sequenceCanBeExtended bool
+	bytes               []byte
+	bitsOffset          uint
+	choiceMap           map[string]map[int]reflect.Type
+	unique              int64
+	canonicalChoiceMap  map[string]map[int64]reflect.Type
+	choiceCanBeExtended bool
 }
 
 // Assuming that UNIQUE ID is being treated as INTEGER
@@ -660,8 +669,7 @@ func (pd *perRawBitData) appendCanonicalChoiceIndex(canonicalChoiceMap map[int64
 
 	// ToDo - find workaround in logging
 	//log.SetLevel(log.Info)
-	// ToDo - sequenceCanBeExtended may cause potential problems
-	threadedBytes := &perRawBitData{[]byte(""), 0, pd.choiceMap, -1, pd.canonicalChoiceMap, false, false}
+	threadedBytes := &perRawBitData{[]byte(""), 0, pd.choiceMap, -1, pd.canonicalChoiceMap, false}
 	if err := threadedBytes.makeField(v, params); err != nil {
 		return err
 	}
@@ -678,8 +686,7 @@ func (pd *perRawBitData) appendCanonicalChoiceIndex(canonicalChoiceMap map[int64
 
 func (pd *perRawBitData) appendOpenType(v reflect.Value, params fieldParameters) error {
 
-	// ToDo - sequenceCanBeExtended may cause potential problems
-	pdOpenType := &perRawBitData{[]byte(""), 0, pd.choiceMap, -1, pd.canonicalChoiceMap, false, false}
+	pdOpenType := &perRawBitData{[]byte(""), 0, pd.choiceMap, -1, pd.canonicalChoiceMap, false}
 	log.Debugf("Encoding OpenType %s to temp RawData", v.Type().String())
 	if err := pdOpenType.makeField(v, params); err != nil {
 		return err
@@ -724,6 +731,18 @@ func (pd *perRawBitData) appendOpenType(v reflect.Value, params fieldParameters)
 }
 
 func (pd *perRawBitData) makeField(v reflect.Value, params fieldParameters) error {
+
+	//log.Debugf("Current bit offset is %v", pd.bitsOffset)
+	//if pd.bitsOffset != 0 {
+	//	log.Debugf("Shifting bits to the right explicitly..")
+	//	err := pd.shiftLastBit()
+	//	if err != nil {
+	//		return err
+	//	}
+	//	log.Debugf("Bits offset is %v, explicitly aligning bits", pd.bitsOffset)
+	//	pd.appendAlignBits()
+	//}
+	//log.Debugf("Current APER bytes with bits offset %v are \n%v", pd.bitsOffset, hex.Dump(pd.bytes))
 
 	log.Debugf("Encoding %s %s", v.Type().String(), v.Kind().String())
 	if !v.IsValid() {
@@ -787,21 +806,17 @@ func (pd *perRawBitData) makeField(v reflect.Value, params fieldParameters) erro
 		structType := fieldType
 		var structParams []fieldParameters
 		var optionalCount uint
-		fromValueExtPresent := false
 		var optionalPresents uint64
 		var choiceType string
 		pd.choiceCanBeExtended = false
-		pd.sequenceCanBeExtended = false
 		// ToDo - currently this is an incorrect treatment of possible extensions with structs.
 		// It is only possible to decode extension which is defined in the encoding schema
 		// struct extensive TODO: support extensed type
 		if params.valueExtensible && !params.choiceExt {
-			pd.sequenceCanBeExtended = true
-			log.Debugf("SEQUENCE can be extended")
-			//log.Debugf("Encoding Value Extensive Bit : true")
-			//if err := pd.putBitsValue(0, 1); err != nil {
-			//	return err
-			//}
+			log.Debugf("Encoding Value Extensive Bit : true")
+			if err := pd.putBitsValue(0, 1); err != nil {
+				return err
+			}
 		}
 		if params.choiceExt {
 			pd.choiceCanBeExtended = true
@@ -822,12 +837,6 @@ func (pd *perRawBitData) makeField(v reflect.Value, params fieldParameters) erro
 				pd.unique = v.Field(i).Int()
 				log.Debugf("Unique of type %v was found - it is %v", reflect.ValueOf(v.Field(i)), pd.unique)
 			}
-			if tempParams.fromValueExt && v.Field(i).Type().Kind() == reflect.Ptr && !v.Field(i).IsNil() {
-				log.Debugf("%v is from SEQUENCE extension and present", structType.Field(i).Name)
-				fromValueExtPresent = true
-			} else if v.Field(i).Type().Kind() == reflect.Ptr && !v.Field(i).IsNil() {
-				log.Debugf("%v is from SEQUENCE extension and not present", structType.Field(i).Name)
-			}
 			choiceType = structType.Field(i).Tag.Get("protobuf_oneof")
 			if choiceType == "" {
 				// for optional flag
@@ -837,7 +846,7 @@ func (pd *perRawBitData) makeField(v reflect.Value, params fieldParameters) erro
 					if !v.Field(i).IsNil() {
 						optionalPresents++
 					}
-				} else if v.Field(i).Type().Kind() == reflect.Ptr && v.Field(i).IsNil() && !tempParams.fromValueExt {
+				} else if v.Field(i).Type().Kind() == reflect.Ptr && v.Field(i).IsNil() {
 					return fmt.Errorf("nil element in SEQUENCE type %v", v.Field(i).Type())
 				}
 			} else {
@@ -851,24 +860,26 @@ func (pd *perRawBitData) makeField(v reflect.Value, params fieldParameters) erro
 
 			structParams = append(structParams, tempParams)
 		}
-
-		if fromValueExtPresent {
-			log.Debugf("SEQUENCE extension is present. Encoding Value Extensive Bit: true")
-			if err := pd.putBitsValue(1, 1); err != nil {
-				return err
-			}
-		} else if pd.sequenceCanBeExtended {
-			log.Debugf("SEQUENCE extension is not present. Encoding Value Extensive Bit: false")
-			if err := pd.putBitsValue(0, 1); err != nil {
-				return err
-			}
-		}
 		if optionalCount > 0 {
 			log.Debugf("putting optional(%d), optionalPresents is %0b", optionalCount, optionalPresents)
 			if err := pd.putBitsValue(optionalPresents, optionalCount); err != nil {
 				return err
 			}
 		}
+
+		//// CHOICE or OpenType
+		//if choiceType != "" { // TODO: remove hard coding
+		//	present := int(*structParams[0].choiceIndex)
+		//	ub := structParams[0].valueUpperBound
+		//	if err := pd.appendChoiceIndex(present, structParams[0].valueExtensible, ub); err != nil {
+		//		return err
+		//	}
+		//
+		//	if err := pd.makeField(val.Field(fieldIdx), structParams[0]); err != nil {
+		//		return err
+		//	}
+		//	return nil
+		//}
 
 		fieldIdx = -1
 		for i := 0; i < structType.NumField(); i++ {
@@ -881,7 +892,6 @@ func (pd *perRawBitData) makeField(v reflect.Value, params fieldParameters) erro
 			if len(structParams) <= fieldIdx {
 				continue
 			}
-
 			if structParams[fieldIdx].optional && optionalCount > 0 {
 				optionalCount--
 				if optionalPresents&(1<<optionalCount) == 0 {
@@ -965,7 +975,7 @@ func (pd *perRawBitData) makeField(v reflect.Value, params fieldParameters) erro
 							return err
 						}
 					} else {
-						// ToDo - test if choice can be extended or not and put an Extensed bit
+						// ToDo - test if choice can be extensed or not and put and Extensed bit
 						if pd.choiceCanBeExtended {
 							log.Debugf("CHOICE can be potentially extensed, putting 0 bit to indicate that")
 							if err := pd.putBitsValue(0, 1); err != nil {
@@ -981,9 +991,7 @@ func (pd *perRawBitData) makeField(v reflect.Value, params fieldParameters) erro
 					return err
 				}
 			} else {
-				if structParams[fieldIdx].fromValueExt && val.Field(i).IsNil() {
-					return nil
-				} else if err := pd.makeField(val.Field(i), structParams[fieldIdx]); err != nil {
+				if err := pd.makeField(val.Field(i), structParams[fieldIdx]); err != nil {
 					return err
 				}
 			}
@@ -1015,8 +1023,7 @@ func Marshal(val interface{}, choiceMap map[string]map[int]reflect.Type, canonic
 // MarshalWithParams allows field parameters to be specified for the
 // top-level element. The form of the params is the same as the field tags.
 func MarshalWithParams(val interface{}, params string, choiceMap map[string]map[int]reflect.Type, canonicalChoiceMap map[string]map[int64]reflect.Type) ([]byte, error) {
-	// ToDo - sequenceCanBeExtended may cause potential problems
-	pd := &perRawBitData{[]byte(""), 0, choiceMap, -1, canonicalChoiceMap, false, false}
+	pd := &perRawBitData{[]byte(""), 0, choiceMap, -1, canonicalChoiceMap, false}
 	err := pd.makeField(reflect.ValueOf(val), parseFieldParameters(params))
 	if err != nil {
 		return nil, err

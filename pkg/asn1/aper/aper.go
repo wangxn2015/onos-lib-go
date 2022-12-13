@@ -1,6 +1,16 @@
-// SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
+// Copyright 2021-present Open Networking Foundation.
 //
-// SPDX-License-Identifier: Apache-2.0
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 package aper
 
@@ -8,8 +18,8 @@ import (
 	"encoding/hex"
 	"fmt"
 	"github.com/onosproject/onos-lib-go/api/asn1/v1/asn1"
-	"github.com/wangxn2015/onos-lib-go/pkg/errors"
-	"github.com/wangxn2015/onos-lib-go/pkg/logging"
+	"github.com/onosproject/onos-lib-go/pkg/errors"
+	"github.com/onosproject/onos-lib-go/pkg/logging"
 	"reflect"
 )
 
@@ -145,7 +155,7 @@ func (pd *perBitData) parseAlignBits() error {
 		if val, err := pd.getBitsValue(alignBits); err != nil {
 			return err
 		} else if val != 0 {
-			return fmt.Errorf("Align Bit is not zero in (see last octet) %v", hex.Dump(pd.bytes[:pd.byteOffset+1]))
+			return fmt.Errorf("Align Bit is not zero in %v", hex.Dump(pd.bytes[pd.byteOffset:pd.byteOffset+1]))
 		}
 	} else if pd.bitsOffset != 0 {
 		pd.bitCarry()
@@ -715,33 +725,26 @@ func parseField(v reflect.Value, pd *perBitData, params fieldParameters) error {
 		v.Set(ptr)
 		return parseField(v.Elem(), pd, params)
 	}
-
 	sizeExtensible := false
+	valueExtensible := false
 	if params.sizeExtensible {
 		if bitsValue, err1 := pd.getBitsValue(1); err1 != nil {
 			return err1
 		} else if bitsValue != 0 {
 			sizeExtensible = true
 		}
-		log.Debugf("Decoded Size Extensive Bit: %t", sizeExtensible)
+		log.Debugf("Decoded Size Extensive Bit : %t", sizeExtensible)
 	}
-
-	valueExtensible := false
 	if params.valueExtensible && v.Kind() != reflect.Slice && !params.choiceExt {
-		if params.valueExtensible && v.Kind() != reflect.Slice && !params.choiceExt {
-			if bitsValue, err1 := pd.getBitsValue(1); err1 != nil {
-				return err1
-			} else if bitsValue != 0 {
-				valueExtensible = true
-			}
-			log.Debugf("Decoded Value Extensive Bit: %t", valueExtensible)
+		if bitsValue, err1 := pd.getBitsValue(1); err1 != nil {
+			return err1
+		} else if bitsValue != 0 {
+			valueExtensible = true
 		}
-		//No need to process bit here, it'll be done inside the case for struct
-		log.Debugf("Indicating Value Extensive Bit: %t", valueExtensible)
+		log.Debugf("Decoded Value Extensive Bit : %t", valueExtensible)
 	}
-
 	if params.choiceExt && v.Kind() != reflect.Slice {
-		// We have to make this variable global. In the decoding we're parsing parent structure first
+		// We have to make this variable global. In the decoding we§re parsing parent structure first
 		// and then drilling down to its child.  Once we've drilled down, we don't see previous (local) flag anymore.
 		pd.choiceCanBeExtended = true
 		log.Debugf("CHOICE can be extended")
@@ -810,11 +813,6 @@ func parseField(v reflect.Value, pd *perBitData, params fieldParameters) error {
 			fieldIdx++
 			tempParams := parseFieldParameters(structType.Field(i).Tag.Get("aper"))
 			tempParams.oneofName = structType.Field(i).Tag.Get("protobuf_oneof")
-
-			if tempParams.valueExtensible {
-				log.Debugf("This SEQUENCE %v can be extended", structType.Field(i).Name)
-			}
-
 			// for optional flag
 			if tempParams.optional {
 				optionalCount++
@@ -838,12 +836,6 @@ func parseField(v reflect.Value, pd *perBitData, params fieldParameters) error {
 				continue
 			}
 			fieldIdx++
-
-			if structParams[fieldIdx].fromValueExt && valueExtensible {
-				log.Debugf("Field \"%s\" in %s is from SEQUENCE extension and present", structType.Field(i).Name, structType)
-			} else if structParams[fieldIdx].fromValueExt {
-				log.Debugf("Field \"%s\" in %s is from SEQUENCE extension and not present", structType.Field(i).Name, structType)
-			}
 			if structParams[fieldIdx].optional && optionalCount > 0 {
 				optionalCount--
 				if optionalPresents&(1<<optionalCount) == 0 {
@@ -854,11 +846,8 @@ func parseField(v reflect.Value, pd *perBitData, params fieldParameters) error {
 				}
 			}
 
-			// In case there could be a sequence extension, and it's not present, checking if we have any bytes to decode
-			if pd.byteOffset != uint64(len(pd.bytes)) {
-				if err := parseField(val.Field(i), pd, structParams[fieldIdx]); err != nil {
-					return err
-				}
+			if err := parseField(val.Field(i), pd, structParams[fieldIdx]); err != nil {
+				return err
 			}
 		}
 		return nil
@@ -879,7 +868,7 @@ func parseField(v reflect.Value, pd *perBitData, params fieldParameters) error {
 		}
 		printableString := string(octetString)
 		val.SetString(printableString)
-		log.Debugf("Decoded PrintableString: \"%s\"", printableString)
+		log.Debugf("Decoded PrintableString : \"%s\"", printableString)
 		return nil
 	case reflect.Interface:
 		var choiceIdx int //:= 1
@@ -1060,7 +1049,6 @@ func Unmarshal(b []byte, value interface{}, choiceMap map[string]map[int]reflect
 // top-level element. The form of the params is the same as the field tags.
 func UnmarshalWithParams(b []byte, value interface{}, params string, choiceMap map[string]map[int]reflect.Type, canonicalChoiceMap map[string]map[int64]reflect.Type) error {
 	v := reflect.ValueOf(value).Elem()
-	// ToDo - sequenceCanBeExtended may cause potential problems
 	pd := &perBitData{b, 0, 0, choiceMap, -1, false, canonicalChoiceMap, false}
 	err := parseField(v, pd, parseFieldParameters(params))
 	if err != nil {

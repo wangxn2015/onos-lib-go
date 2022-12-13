@@ -1,6 +1,16 @@
-// SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
+// Copyright 2020-present Open Networking Foundation.
 //
-// SPDX-License-Identifier: Apache-2.0
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 package cli
 
@@ -9,10 +19,10 @@ import (
 	"strings"
 	"time"
 
+	api "github.com/onosproject/onos-lib-go/api/logging"
+	"github.com/onosproject/onos-lib-go/pkg/cli"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
-	api "github.com/wangxn2015/onos-lib-go/api/logging"
-	"github.com/wangxn2015/onos-lib-go/pkg/cli"
 )
 
 func getSetCommand() *cobra.Command {

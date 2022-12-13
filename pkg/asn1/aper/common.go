@@ -1,6 +1,16 @@
-// SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
+// Copyright 2021-present Open Networking Foundation.
 //
-// SPDX-License-Identifier: Apache-2.0
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 package aper
 
@@ -29,7 +39,6 @@ type fieldParameters struct {
 	canonicalOrder      bool   // true, if CHOICE is needed to be encoded in canonical ordering
 	fromChoiceExt       bool   // true, if CHOICE item belongs to CHOICE extension
 	choiceExt           bool   // true, if CHOICE can be extended with other items
-	fromValueExt        bool   // true, if item in SEQUENCE belongs to SEQUENCE extension
 }
 
 // Given a tag string with the format specified in the package comment,
@@ -38,8 +47,6 @@ type fieldParameters struct {
 func parseFieldParameters(str string) (params fieldParameters) {
 	for _, part := range strings.Split(str, ",") {
 		switch {
-		case part == "fromValueExt":
-			params.fromValueExt = true
 		case part == "choiceExt":
 			params.choiceExt = true
 		case part == "fromChoiceExt":
