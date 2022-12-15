@@ -23,7 +23,7 @@ import (
 )
 
 func init() {
-	err := zap.RegisterSink("kafka_wxn_dev", kafkaSinkFactory)
+	err := zap.RegisterSink("kafka-wxn-dev", kafkaSinkFactory)
 	if err != nil {
 		panic(err)
 	}
