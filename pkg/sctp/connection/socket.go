@@ -16,7 +16,6 @@ package connection
 
 import (
 	"fmt"
-	"io"
 	"net"
 	"os"
 	"sync/atomic"
@@ -161,11 +160,11 @@ func read(fd int, b []byte) (dataCount int, oob *types.OOBMessage, flags int, er
 	if err != nil {
 		return
 	}
-
-	if dataCount == 0 && oobCount == 0 {
-		err = io.EOF
-		return
-	}
+	// wxn -- > commented at 2023.1.16 for RAN testing
+	//if dataCount == 0 && oobCount == 0 {
+	//	err = io.EOF
+	//	return
+	//}
 
 	if oobCount > 0 {
 		oob, err = SCTPParseOOB(oobBuffer[:oobCount])
